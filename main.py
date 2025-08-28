@@ -57,15 +57,11 @@ if not title_tag:
 title = title_tag.text.strip()
 link = urljoin(PAGE_URL, title_tag["href"])
 
-source_tag = soup.select_one("div.vr1PYe")
-source = source_tag.text.strip() if source_tag else ""
-
 time_tag = soup.select_one("time.hvbAAd")
 time_text = time_tag.text.strip() if time_tag else ""
 
 print("📰 Latest Article:", title)
 print("🔗 URL:", link)
-print("📌 Source:", source)
 print("⏰ Time:", time_text)
 
 # -----------------------------
@@ -79,7 +75,6 @@ if any(link in x or title in x for x in posted_articles):
 # 6️⃣ Extract high-res image
 # -----------------------------
 def upgrade_attachment_url(url):
-    # replace width-height patterns like -w400-h300 or =w400-h300
     return re.sub(r'([-=])w\d+-h\d+', r'\1w1080-h720', url)
 
 img_tag = soup.select_one("img.Quavad")
@@ -124,11 +119,11 @@ paragraph_prompt = f"""
 - Natural emojis ব্যবহার করো
 - পোস্টের শেষে call-to-action রাখো
 - কোনো intro বা spoiler text যোগ করো না
+- সোর্সের নাম বা publication উল্লেখ করো না
 
 নিউজ কনটেন্ট:
 ---
 {title}
-{source}
 {time_text}
 """
 
